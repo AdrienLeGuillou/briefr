@@ -1,3 +1,14 @@
+brf_summary_df <- function(df) {
+  out <- data.frame(
+    n_rows = nrow(df),
+    n_complete = sum(complete.cases(df)),
+    prop_complete = mean(complete.cases(df)),
+    n_cols = ncol(df)
+  )
+
+  out
+}
+
 brf_summary_num <- function(df, data_col, grouping_col = NULL) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)

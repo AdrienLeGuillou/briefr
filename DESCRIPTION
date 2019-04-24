@@ -15,7 +15,8 @@ Imports:
     gt (>= 0.1.0),
     tidyr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    moments
 Remotes: 
     rstudio/gt
 RoxygenNote: 6.1.1
