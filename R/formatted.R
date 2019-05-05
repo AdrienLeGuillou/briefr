@@ -1,3 +1,13 @@
+brf_formatted_df <- function(df) {
+  desc <- brf_summary_df(df)
+
+  tab1 <-
+    desc %>%
+    gt::gt()
+
+  tab1
+}
+
 brf_formatted_num <- function(df, data_col, grouping_col = NULL, decimals = 1) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)

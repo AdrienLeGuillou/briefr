@@ -1,3 +1,12 @@
+#' Summarise a data frame
+#'
+#' Produce the summary of a data frame.
+#'
+#' @param df the data frame to summarise
+#'
+#' @return a one-row data with summarising df
+#'
+#' @export
 brf_summary_df <- function(df) {
   out <- data.frame(
     n_rows = nrow(df),
@@ -9,6 +18,15 @@ brf_summary_df <- function(df) {
   out
 }
 
+#' Summarise a numerical column in a data frame with a grouping option
+#'
+#' @param df a data frame
+#' @param data_col the unquoted name of the column to summarise
+#' @param grouping_col the unquoted name of the column to use for groupings
+#'
+#' @return a dataframe containing the summary informations
+#'
+#' @export
 brf_summary_num <- function(df, data_col, grouping_col = NULL) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
@@ -49,6 +67,11 @@ brf_summary_num <- function(df, data_col, grouping_col = NULL) {
   out
 }
 
+#' Summarise a categorical column in a data frame with a grouping option
+#'
+#' @inheritParams brf_summary_num
+#' @inherit brf_summary_num return
+#' @export
 brf_summary_cat <- function(df, data_col, grouping_col = NULL) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
@@ -71,6 +94,11 @@ brf_summary_cat <- function(df, data_col, grouping_col = NULL) {
     )
 }
 
+#' Summarise the levels of a categorical column in a data frame with a grouping option
+#'
+#' @inheritParams brf_summary_num
+#' @inherit brf_summary_num return
+#' @export
 brf_summary_cat_lvl <- function(df, data_col, grouping_col = NULL,
                                        na.rm = F) {
   data_col <- rlang::enquo(data_col)

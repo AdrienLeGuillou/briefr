@@ -4,7 +4,8 @@
 \alias{brf_describe}
 \title{Get a briefing of a data frame}
 \usage{
-brf_describe(df, file, groupings = NULL, na.rm = F)
+brf_describe(df, groupings = NULL, na.rm = F,
+  output_filename = "briefing.html", output_dir = NULL)
 }
 \description{
 Get a briefing of a data frame

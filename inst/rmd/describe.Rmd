@@ -14,6 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 symnames <- rlang::syms(colnames(df))
 ```
   
+# Dataframe overview
+  
+```{r results='asis', warning=FALSE, message=FALSE, echo=FALSE}
+  brf_rmd_df(df)
+```
 
 # Non Grouped description
 
@@ -23,7 +28,6 @@ invisible(lapply(
   brf_rmd_dispatch, df = df, na.rm = na.rm
 ))
 ```
-
 
 ```{r results='asis', warning=FALSE, message=FALSE, echo=FALSE}
 invisible(lapply(
