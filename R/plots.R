@@ -184,8 +184,8 @@ brf_plot_cat_prop <- function(df, data_col, grouping_col = NULL, na.rm = FALSE) 
 
     default_layer <- c(
       default_layer,
-      list(ggplot2::ylab(rlang::as_label(data_col)))
-      )
+      list(ggplot2::ylab("prop"))
+    )
 
     selection <- c(selection, grouping_col)
   } else {
