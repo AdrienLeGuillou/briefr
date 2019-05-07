@@ -3,7 +3,6 @@
 #' Produce the summary of a data frame.
 #'
 #' @param df the data frame to summarise
-#'
 #' @return a one-row data with summarising df
 #'
 #' @export
@@ -23,7 +22,6 @@ brf_summary_df <- function(df) {
 #' @param df a data frame
 #' @param data_col the unquoted name of the column to summarise
 #' @param grouping_col the unquoted name of the column to use for groupings
-#'
 #' @return a dataframe containing the summary informations
 #'
 #' @export
@@ -97,6 +95,7 @@ brf_summary_cat <- function(df, data_col, grouping_col = NULL) {
 #' Summarise the levels of a categorical column in a data frame with a grouping option
 #'
 #' @inheritParams brf_summary_num
+#' @param na.rm should `NA`s be removed (default: FALSE)
 #' @inherit brf_summary_num return
 #' @export
 brf_summary_cat_lvl <- function(df, data_col, grouping_col = NULL,

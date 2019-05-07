@@ -1,6 +1,6 @@
 Package: briefr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Get a briefing of your data frame
 Version: 0.1.0
 Author: Adrien LE GUILLOU
 Maintainer: Adrien LE GUILLOU <adrien.leguillou@gmail.com>

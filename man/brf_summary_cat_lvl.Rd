@@ -12,6 +12,8 @@ brf_summary_cat_lvl(df, data_col, grouping_col = NULL, na.rm = F)
 \item{data_col}{the unquoted name of the column to summarise}
 
 \item{grouping_col}{the unquoted name of the column to use for groupings}
+
+\item{na.rm}{should `NA`s be removed (default: FALSE)}
 }
 \value{
 a dataframe containing the summary informations
