@@ -50,10 +50,22 @@ brf_rmd_cat <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
 
-  cat("### Overview \n\n")
+  cat("### Count plot \n\n")
 
   print(brf_plot_cat_count(df, !!data_col, !!grouping_col, na.rm = na.rm))
   cat("\n\n")
+
+  if (!rlang::quo_is_null(grouping_col)) {
+    brf_formatted_cat_lvl_wide(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
+      gt::as_raw_html() %>%
+      cat()
+    cat("\n\n")
+  } else {
+    brf_formatted_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
+      gt::as_raw_html() %>%
+      cat()
+    cat("\n\n")
+  }
 
   cat("### Proportion plot \n\n")
 
