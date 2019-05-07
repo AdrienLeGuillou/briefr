@@ -182,11 +182,6 @@ brf_plot_cat_prop <- function(df, data_col, grouping_col = NULL, na.rm = FALSE) 
     aesthetic <- c(aesthetic, ggplot2::aes(x = !!grouping_col))
     class(aesthetic) <- "uneval"
 
-    default_layer <- c(
-      default_layer,
-      list(ggplot2::ylab("prop"))
-    )
-
     selection <- c(selection, grouping_col)
   } else {
     aesthetic <- c(aesthetic, ggplot2::aes(x = "all"))
@@ -200,6 +195,12 @@ brf_plot_cat_prop <- function(df, data_col, grouping_col = NULL, na.rm = FALSE) 
       )
     )
   }
+
+
+  default_layer <- c(
+    default_layer,
+    list(ggplot2::ylab("prop"))
+  )
 
   if (na.rm) df <- na.omit(dplyr::select(df, !!!selection))
 
