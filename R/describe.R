@@ -1,5 +1,13 @@
 #' Get a briefing of a data frame
 #'
+#' @inheritParams brf_summary_df
+#' @param groupings The columns to use as grouping variables. This takes a tidyselect specification.
+#'   Multiple columns means multiple groupings, not cross-groupings
+#' @param output_filename The name of the .html report (default: "briefing.html")
+#' @param output_dir The folder where to put the report. (default: `NULL`)
+#'   If set to `NULL` the report will be put in the current working directory
+#'   Otherwise this parameter will be passed to the `output_dir` parameter of rmarkdown::render()
+#'
 #' @export
 brf_describe <- function(df, groupings = NULL, na.rm = F,
                          output_filename = "briefing.html",

@@ -4,7 +4,7 @@
 \name{briefr-package}
 \alias{briefr}
 \alias{briefr-package}
-\title{briefr: What the Package Does (Title Case)}
+\title{briefr: Get a briefing of your data frame}
 \description{
 More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.

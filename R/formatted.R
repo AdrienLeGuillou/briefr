@@ -1,3 +1,9 @@
+#' Format a data frame summary with `gt()`
+#'
+#' @param df the data frame to summarise
+#' @return the summary as a `gt_tbl`
+#'
+#' @export
 brf_formatted_df <- function(df) {
   desc <- brf_summary_df(df)
 
@@ -8,6 +14,12 @@ brf_formatted_df <- function(df) {
   tab1
 }
 
+#' Format a numerical column summary with `gt()`
+#'
+#' @inheritParams brf_summary_num
+#' @inherit brf_formatted_df return
+#'
+#' @export
 brf_formatted_num <- function(df, data_col, grouping_col = NULL, decimals = 1) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
@@ -80,6 +92,12 @@ brf_formatted_num <- function(df, data_col, grouping_col = NULL, decimals = 1) {
   tab1
 }
 
+#' Format a categorical column summary with `gt()`
+#'
+#' @inheritParams brf_summary_cat
+#' @inherit brf_formatted_df return
+#'
+#' @export
 brf_formatted_cat <- function(df, data_col, grouping_col = NULL) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
@@ -131,20 +149,32 @@ brf_formatted_cat <- function(df, data_col, grouping_col = NULL) {
   tab1
 }
 
+#' Format a categorical column levels summary with `gt()`
+#'
+#' @inheritParams brf_summary_cat_lvl
+#' @inherit brf_formatted_df return
+#'
+#' @export
 brf_formatted_cat_lvl <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
+
+  has_groups <- !rlang::quo_is_null(grouping_col)
 
   df <- dplyr::ungroup(df)
 
   df <- brf_summary_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm)
 
-  if (!rlang::quo_is_null(grouping_col)) {
+  if (has_groups) {
     df <- df %>%
       dplyr::arrange(!!data_col, !!grouping_col) %>%
       dplyr::mutate(!!grouping_col := tidyr::replace_na(!!grouping_col, "NA"))
+
+    gt_group <- TRUE
   } else {
     df <- dplyr::arrange(df, !!data_col)
+
+    gt_group <- NULL
   }
 
   gt::gt(
@@ -153,13 +183,13 @@ brf_formatted_cat_lvl <- function(df, data_col, grouping_col = NULL, na.rm = F) 
     rowname_col = rlang::as_label(data_col)
   ) %>%
     gt::summary_rows(
-      groups = TRUE,
+      groups = gt_group,
       columns = dplyr::vars(prop_overall),
       fns = list(total = ~sum(.)),
       formatter = gt::fmt_percent, decimals = 1
     ) %>%
     gt::summary_rows(
-      groups = TRUE,
+      groups = gt_group,
       columns = dplyr::vars(n),
       fns = list(total = ~sum(.)),
       decimals = 0
@@ -180,13 +210,20 @@ brf_formatted_cat_lvl <- function(df, data_col, grouping_col = NULL, na.rm = F) 
       gt::md(paste0("Levels of variable **`", rlang::as_label(data_col), "`**")),
       gt::md(
         ifelse(
-          rlang::quo_is_null(grouping_col), "",
-          paste0("Grouped by *`", rlang::as_label(grouping_col), "`*")
+          has_groups,
+          paste0("Grouped by *`", rlang::as_label(grouping_col), "`*"),
+          ""
         )
       )
     )
 }
 
+#' Format a categorical column levels summary with `gt()` - wide version
+#'
+#' @inheritParams brf_summary_cat_lvl
+#' @inherit brf_formatted_df return
+#'
+#' @export
 brf_formatted_cat_lvl_wide <- function(df, data_col, grouping_col, na.rm = F) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
