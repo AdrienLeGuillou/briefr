@@ -103,7 +103,6 @@ brf_rmd_cat <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   cat("\n\n")
 }
 
-
 #' Choose the correct RMarkDown function depending on the column type
 #'
 #' @inheritParams brf_summary_cat_lvl
@@ -120,7 +119,9 @@ brf_rmd_dispatch <- function(df, data_col, grouping_col = NULL, na.rm = F) {
     ),"{.tabset} \n\n")
   )
 
-  if (any(class(dplyr::pull(df, !!data_col)) %in% c("numeric", "Date")))
+  if (all(is.na( dplyr::pull(df, !!data_col) )))
+    appropriate_rmd <- function(...) cat("Only NA's (missing values) \n\n")
+  else if (any(class(dplyr::pull(df, !!data_col)) %in% c("numeric", "Date")))
     appropriate_rmd <- brf_rmd_num
   else if (any(
     class(dplyr::pull(df, !!data_col)) %in% c("character", "factor", "logical")))
