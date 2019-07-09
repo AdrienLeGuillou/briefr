@@ -207,7 +207,7 @@ brf_plot_cat_prop <- function(df, data_col, grouping_col = NULL, na.rm = FALSE) 
   p <-
     ggplot2::ggplot(df, aesthetic) +
     ggplot2::geom_bar(
-      aes(y = ..count../tapply(..count.., ..x.., sum)[..x..]),
+      ggplot2::aes(y = ..count../tapply(..count.., ..x.., sum)[..x..]),
       position = "dodge"
     ) +
     ggplot2::geom_text(
