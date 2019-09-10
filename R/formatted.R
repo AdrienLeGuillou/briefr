@@ -83,7 +83,7 @@ brf_formatted_num <- function(df, data_col, grouping_col = NULL, decimals = 1) {
   if (!rlang::quo_is_null(grouping_col)) {
     tab1 <- tab1 %>%
       gt::tab_style(
-        style = gt::cells_styles(text_align = "right"),
+        style = gt::cell_text(align = "right"),
         locations = gt::cells_stub()
       )
   }
@@ -141,7 +141,7 @@ brf_formatted_cat <- function(df, data_col, grouping_col = NULL) {
   if (!rlang::quo_is_null(grouping_col)) {
     tab1 <- tab1 %>%
       gt::tab_style(
-        style = gt::cells_styles(text_align = "right"),
+        style = gt::cell_text(align = "right"),
         locations = gt::cells_stub()
       )
   }
@@ -203,7 +203,7 @@ brf_formatted_cat_lvl <- function(df, data_col, grouping_col = NULL, na.rm = F) 
       row_group.font.weight = "bold"
     ) %>%
     gt::tab_style(
-      style = gt::cells_styles(text_align = "right"),
+      style = gt::cell_text(align = "right"),
       locations = gt::cells_stub()
     ) %>%
     gt::tab_header(
@@ -258,7 +258,7 @@ brf_formatted_cat_lvl_wide <- function(df, data_col, grouping_col, na.rm = F) {
     ) %>%
     gt::cols_align(align = "center", columns =  dplyr::everything()) %>%
     gt::tab_style(
-      style = gt::cells_styles(text_align = "right"),
+      style = gt::cell_text(align = "right"),
       locations = gt::cells_stub()
     ) %>%
     gt::tab_header(
