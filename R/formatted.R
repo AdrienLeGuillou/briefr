@@ -242,8 +242,8 @@ brf_formatted_cat_lvl_wide <- function(df, data_col, grouping_col, na.rm = F) {
     dplyr::select(-prop_overall) %>%
     tidyr::complete(!!data_col, !!grouping_col) %>%
     tidyr::nest(-c(!!data_col, !!grouping_col)) %>%
-    tidyr::spread(!!grouping_col, data) %>%
-    tidyr::unnest(.sep = "__")
+    tidyr::pivot_wider(names_from = !!grouping_col, values_from = data) %>%
+    tidyr::unnest(names_sep = "__")
 
   tab1 <-
     df %>%

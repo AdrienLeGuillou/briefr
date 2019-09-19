@@ -31,14 +31,14 @@ brf_rmd_num <- function(df, data_col, grouping_col = NULL, na.rm = F) {
     gt::as_raw_html() %>% cat()
   cat("\n\n")
 
-  cat("### Histogram zoom \n\n")
-
-  print(brf_plot_num_hist(df, !!data_col, !!grouping_col))
-  cat("\n\n")
-
-  cat("### Violin zoom \n\n")
-
-  print(brf_plot_num_violin(df, !!data_col, !!grouping_col))
+  # cat("### Histogram zoom \n\n")
+  #
+  # print(brf_plot_num_hist(df, !!data_col, !!grouping_col))
+  # cat("\n\n")
+  #
+  # cat("### Violin zoom \n\n")
+  #
+  # print(brf_plot_num_violin(df, !!data_col, !!grouping_col))
 
   cat("\n\n")
 }
@@ -67,22 +67,22 @@ brf_rmd_cat <- function(df, data_col, grouping_col = NULL, na.rm = F) {
     cat("\n\n")
   }
 
-  cat("### Proportion plot \n\n")
-
-  print(brf_plot_cat_prop(df, !!data_col, !!grouping_col, na.rm = na.rm))
-  cat("\n\n")
-
-  if (!rlang::quo_is_null(grouping_col)) {
-    brf_formatted_cat_lvl_wide(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
-      gt::as_raw_html() %>%
-      cat()
-    cat("\n\n")
-  } else {
-    brf_formatted_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
-      gt::as_raw_html() %>%
-      cat()
-    cat("\n\n")
-  }
+  # cat("### Proportion plot \n\n")
+  #
+  # print(brf_plot_cat_prop(df, !!data_col, !!grouping_col, na.rm = na.rm))
+  # cat("\n\n")
+  #
+  # if (!rlang::quo_is_null(grouping_col)) {
+  #   brf_formatted_cat_lvl_wide(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
+  #     gt::as_raw_html() %>%
+  #     cat()
+  #   cat("\n\n")
+  # } else {
+  #   brf_formatted_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
+  #     gt::as_raw_html() %>%
+  #     cat()
+  #   cat("\n\n")
+  # }
 
   cat("### Summary \n\n")
 
