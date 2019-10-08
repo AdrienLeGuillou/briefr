@@ -4,7 +4,8 @@
 \alias{brf_formatted_cat_lvl}
 \title{Format a categorical column levels summary with `gt()`}
 \usage{
-brf_formatted_cat_lvl(df, data_col, grouping_col = NULL, na.rm = F)
+brf_formatted_cat_lvl(df, data_col, grouping_col = NULL, na.rm = F,
+  decimals = 1)
 }
 \arguments{
 \item{df}{a data frame}
@@ -16,7 +17,7 @@ brf_formatted_cat_lvl(df, data_col, grouping_col = NULL, na.rm = F)
 \item{na.rm}{should `NA`s be removed (default: FALSE)}
 }
 \value{
-the summary as a `gt_tbl`
+the summary as a `kable table`
 }
 \description{
 Format a categorical column levels summary with `gt()`

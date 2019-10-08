@@ -1,20 +1,18 @@
-#' Format a data frame summary with `gt()`
+#' Format a data frame summary with `kable()`
 #'
 #' @param df the data frame to summarise
-#' @return the summary as a `gt_tbl`
+#' @return the summary as a `kable table`
 #'
 #' @export
 brf_formatted_df <- function(df) {
-  desc <- brf_summary_df(df)
+  df <- brf_summary_df(df)
 
-  tab1 <-
-    desc %>%
-    gt::gt()
+  tab <- kableExtra::kable(df, align = rep("c", 4))
 
-  tab1
+  dflt_kable(df)
 }
 
-#' Format a numerical column summary with `gt()`
+#' Format a numerical column summary with `kable()`
 #'
 #' @inheritParams brf_summary_num
 #' @inherit brf_formatted_df return
@@ -24,129 +22,80 @@ brf_formatted_num <- function(df, data_col, grouping_col = NULL, decimals = 1) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
 
+  # convert `decimals` to the `accuracy` equivalent for `scales`
+  accuracy <- 10^(-decimals)
+
   df <- dplyr::ungroup(df)
   date_gt <- is(dplyr::pull(df, !!data_col), "Date")
 
   df <- brf_summary_num(df, !!data_col, !!grouping_col)
 
-  if (!rlang::quo_is_null(grouping_col)) {
-    df <- dplyr::arrange(df, !!grouping_col)
-  }
-
-  tab1 <-
-    gt::gt(
-      df,
-      rowname_col = rlang::as_label(grouping_col)
-    )
-
+  # format percentiles and mean, with special format for dates
   if (date_gt) {
-    tab1 <- tab1 %>%
-      gt::fmt_date(
-        columns = dplyr::matches("(p[0-9])|(mean)"),
-        date_style = 13
-      )
-  } else {
-    tab1 <- tab1 %>%
-      gt::fmt_number(
-        columns = dplyr::matches("(p[0-9])|(mean)"),
-        decimals = decimals
-      )
-  }
-
-  tab1 <- tab1 %>%
-    gt::fmt_number(
-      columns = dplyr::vars(n, missing),
-      decimals = 0
-    ) %>%
-    gt::fmt_number(
-      columns = dplyr::vars(sd, skew, kurt),
-      decimals = decimals
-    ) %>%
-    gt::fmt_percent(
-      columns = dplyr::starts_with("prop"),
-      decimals = 1
-    ) %>%
-    gt::cols_merge(
-      col_1 = dplyr::vars(missing),
-      col_2 = dplyr::vars(prop_missing),
-      pattern = "{1} ({2})"
-    ) %>%
-    gt::cols_align(align = "center", columns = dplyr::everything()) %>%
-    gt::tab_header(
-      gt::md(paste0("Summary of variable **`", rlang::as_label(data_col), "`**")),
-      gt::md(ifelse(
-        rlang::quo_is_null(grouping_col), "",
-        paste0("Grouped by *`", rlang::as_label(grouping_col), "`*")
-      ))
+    df <- dplyr::mutate_at(
+      df,
+      dplyr::vars(dplyr::matches("(p[0-9])|(mean)")),
+      scales::date_format()
     )
-
-  if (!rlang::quo_is_null(grouping_col)) {
-    tab1 <- tab1 %>%
-      gt::tab_style(
-        style = gt::cell_text(align = "right"),
-        locations = gt::cells_stub()
-      )
+  } else {
+    df <- dplyr::mutate_at(
+      df,
+      dplyr::vars(dplyr::matches("(p[0-9])|(mean)")),
+      function(x) scales::number(x, accuracy = accuracy)
+    )
   }
 
+  # format the other columns
+  df <- df %>%
+    dplyr::mutate_at(
+      dplyr::vars(n, missing),
+      scales::number_format(accuracy = 1)
+    ) %>%
+    dplyr::mutate_at(
+      dplyr::vars(sd, skew, kurt),
+      scales::number_format(accuracy = accuracy)
+    ) %>%
+    dplyr::mutate(
+      prop_missing = scales::percent(prop_missing, accuracy = accuracy),
+      missing = paste0(missing, " (", prop_missing, ")")
+    ) %>%
+    dplyr::select(-prop_missing)
 
-  tab1
+  dflt_kable(df, !!grouping_col)
 }
 
-#' Format a categorical column summary with `gt()`
+#' Format a categorical column summary with `kable()`
 #'
 #' @inheritParams brf_summary_cat
 #' @inherit brf_formatted_df return
 #'
 #' @export
-brf_formatted_cat <- function(df, data_col, grouping_col = NULL) {
+brf_formatted_cat <- function(df, data_col, grouping_col = NULL, decimals = 1) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
 
-  df <- dplyr::ungroup(df)
+  # convert `decimals` to the `accuracy` equivalent for `scales`
+  accuracy <- 10^(-decimals)
 
+  df <- dplyr::ungroup(df)
   df <- brf_summary_cat(df, !!data_col, !!grouping_col)
 
-  if (!rlang::quo_is_null(grouping_col)) {
-    df <- dplyr::arrange(df, !!grouping_col)
-  }
+  df <- df %>%
+    dplyr::mutate_at(
+      dplyr::vars(n, levels, missing),
+      scales::number_format(accuracy = 1)
+    ) %>%
+    dplyr::mutate_at(
+      dplyr::vars(prop_mode, prop_missing),
+      scales::percent_format(accuracy = accuracy)
+    ) %>%
+    dplyr::mutate(
+      mode = paste0(mode, " (", prop_mode, ")"),
+      missing = paste0(missing, " (", prop_missing, ")")
+    ) %>%
+    dplyr::select(-c(prop_mode, prop_missing))
 
-  tab1 <-
-    gt::gt(
-      df,
-      rowname_col = rlang::as_label(grouping_col)
-    ) %>%
-    gt::fmt_percent(
-      columns = dplyr::starts_with("prop"),
-      decimals = 1
-    ) %>%
-    gt::cols_merge(
-      col_1 = dplyr::vars(mode),
-      col_2 = dplyr::vars(prop_mode),
-      pattern = "{1} ({2})"
-    ) %>%
-    gt::cols_merge(
-      col_1 = dplyr::vars(missing),
-      col_2 = dplyr::vars(prop_missing),
-      pattern = "{1} ({2})"
-    ) %>%
-    gt::cols_align(align = "center", columns = dplyr::everything()) %>%
-    gt::tab_header(
-      gt::md(paste0("Summary of variable **`", rlang::as_label(data_col), "`**")),
-      gt::md(ifelse(
-        rlang::quo_is_null(grouping_col), "",
-        paste0("Grouped by *`", rlang::as_label(grouping_col), "`*")
-      ))
-    )
-
-  if (!rlang::quo_is_null(grouping_col)) {
-    tab1 <- tab1 %>%
-      gt::tab_style(
-        style = gt::cell_text(align = "right"),
-        locations = gt::cells_stub()
-      )
-  }
-
-  tab1
+  dflt_kable(df, !!grouping_col)
 }
 
 #' Format a categorical column levels summary with `gt()`
@@ -155,119 +104,38 @@ brf_formatted_cat <- function(df, data_col, grouping_col = NULL) {
 #' @inherit brf_formatted_df return
 #'
 #' @export
-brf_formatted_cat_lvl <- function(df, data_col, grouping_col = NULL, na.rm = F) {
+brf_formatted_cat_lvl <- function(df, data_col, grouping_col = NULL,
+                                  na.rm = F, decimals = 1) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
+
+  # convert `decimals` to the `accuracy` equivalent for `scales`
+  accuracy <- 10^(-decimals)
 
   has_groups <- !rlang::quo_is_null(grouping_col)
 
   df <- dplyr::ungroup(df)
-
-  df <- brf_summary_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm)
-
-  if (has_groups) {
-    df <- df %>%
-      dplyr::arrange(!!data_col, !!grouping_col) %>%
-      dplyr::mutate(!!grouping_col := tidyr::replace_na(!!grouping_col, "NA"))
-
-    gt_group <- TRUE
-  } else {
-    df <- dplyr::arrange(df, !!data_col)
-
-    gt_group <- NULL
-  }
-
-  gt::gt(
-    df,
-    groupname_col = rlang::as_label(grouping_col),
-    rowname_col = rlang::as_label(data_col)
-  ) %>%
-    gt::summary_rows(
-      groups = gt_group,
-      columns = dplyr::vars(prop_overall),
-      fns = list(total = ~sum(.)),
-      formatter = gt::fmt_percent, decimals = 1
-    ) %>%
-    gt::summary_rows(
-      groups = gt_group,
-      columns = dplyr::vars(n),
-      fns = list(total = ~sum(.)),
-      decimals = 0
-    ) %>%
-    gt::fmt_percent(
-      columns = dplyr::starts_with("prop"),
-      decimals = 1
-    ) %>%
-    gt::cols_align(align = "center", columns = dplyr::everything()) %>%
-    gt::tab_options(
-      row_group.font.weight = "bold"
-    ) %>%
-    gt::tab_style(
-      style = gt::cell_text(align = "right"),
-      locations = gt::cells_stub()
-    ) %>%
-    gt::tab_header(
-      gt::md(paste0("Levels of variable **`", rlang::as_label(data_col), "`**")),
-      gt::md(
-        ifelse(
-          has_groups,
-          paste0("Grouped by *`", rlang::as_label(grouping_col), "`*"),
-          ""
-        )
-      )
+  df <- brf_summary_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
+    tidyr::complete(
+      !!grouping_col, !!data_col,
+      fill = list(n = 0, prop = 0, prop_overall = 0)
     )
-}
-
-#' Format a categorical column levels summary with `gt()` - wide version
-#'
-#' @inheritParams brf_summary_cat_lvl
-#' @inherit brf_formatted_df return
-#'
-#' @export
-brf_formatted_cat_lvl_wide <- function(df, data_col, grouping_col, na.rm = F) {
-  data_col <- rlang::enquo(data_col)
-  grouping_col <- rlang::enquo(grouping_col)
-
-  df <- dplyr::ungroup(df)
-
-  df <- brf_summary_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm)
 
   df <- df %>%
-    dplyr::arrange(!!data_col, !!grouping_col) %>%
-    dplyr::mutate(!!grouping_col := tidyr::replace_na(!!grouping_col, "NA"))
-
-
-  df <-
-    df %>%
-    dplyr::select(-prop_overall) %>%
-    tidyr::complete(!!data_col, !!grouping_col) %>%
-    tidyr::nest(-c(!!data_col, !!grouping_col)) %>%
-    tidyr::pivot_wider(names_from = !!grouping_col, values_from = data) %>%
-    tidyr::unnest(names_sep = "__")
-
-  tab1 <-
-    df %>%
-    gt::gt(rowname_col = rlang::as_label(data_col)) %>%
-    gt::tab_stubhead(label = rlang::as_label(data_col))
-
-  tab1 %>%
-    gt::cols_split_delim("__") %>%
-    gt::fmt_percent(
-      columns = dplyr::matches("__prop"),
-      decimals = 1
+    dplyr::mutate(
+      n = scales::number(n, accuracy = 1),
+      prop = scales::percent(prop, accuracy = accuracy),
+      n = paste0(n, " (", prop, ")")
     ) %>%
-    gt::cols_align(align = "center", columns =  dplyr::everything()) %>%
-    gt::tab_style(
-      style = gt::cell_text(align = "right"),
-      locations = gt::cells_stub()
-    ) %>%
-    gt::tab_header(
-      gt::md(paste0("Levels of variable **`", rlang::as_label(data_col), "`**")),
-      gt::md(
-        ifelse(
-          rlang::quo_is_null(grouping_col), "",
-          paste0("Grouped by *`", rlang::as_label(grouping_col), "`*")
-        )
-      )
+    dplyr::select(-c(prop, prop_overall))
+
+
+  df <- df %>%
+    tidyr::pivot_wider(
+      names_from = !!data_col, values_from = n,
+      names_prefix = paste0(rlang::as_label(data_col), ": ")
     )
+
+  dflt_kable(df, !!grouping_col)
 }
+

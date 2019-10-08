@@ -2,9 +2,9 @@
 % Please edit documentation in R/formatted.R
 \name{brf_formatted_cat}
 \alias{brf_formatted_cat}
-\title{Format a categorical column summary with `gt()`}
+\title{Format a categorical column summary with `kable()`}
 \usage{
-brf_formatted_cat(df, data_col, grouping_col = NULL)
+brf_formatted_cat(df, data_col, grouping_col = NULL, decimals = 1)
 }
 \arguments{
 \item{df}{a data frame}
@@ -14,8 +14,8 @@ brf_formatted_cat(df, data_col, grouping_col = NULL)
 \item{grouping_col}{the unquoted name of the column to use for groupings}
 }
 \value{
-the summary as a `gt_tbl`
+the summary as a `kable table`
 }
 \description{
-Format a categorical column summary with `gt()`
+Format a categorical column summary with `kable()`
 }

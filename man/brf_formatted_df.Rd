@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatted.R
 \name{brf_formatted_df}
 \alias{brf_formatted_df}
-\title{Format a data frame summary with `gt()`}
+\title{Format a data frame summary with `kable()`}
 \usage{
 brf_formatted_df(df)
 }
@@ -10,8 +10,8 @@ brf_formatted_df(df)
 \item{df}{the data frame to summarise}
 }
 \value{
-the summary as a `gt_tbl`
+the summary as a `kable table`
 }
 \description{
-Format a data frame summary with `gt()`
+Format a data frame summary with `kable()`
 }

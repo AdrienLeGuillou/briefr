@@ -12,11 +12,10 @@ LazyData: true
 Imports: 
     dplyr (>= 0.8.0.1),
     rlang,
-    gt (>= 0.1.0),
     tidyr,
+    kableExtra,
     knitr,
     rmarkdown,
+    scales,
     moments
-Remotes: 
-    rstudio/gt
 RoxygenNote: 6.1.1

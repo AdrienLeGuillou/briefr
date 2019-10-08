@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatted.R
 \name{brf_formatted_num}
 \alias{brf_formatted_num}
-\title{Format a numerical column summary with `gt()`}
+\title{Format a numerical column summary with `kable()`}
 \usage{
 brf_formatted_num(df, data_col, grouping_col = NULL, decimals = 1)
 }
@@ -14,8 +14,8 @@ brf_formatted_num(df, data_col, grouping_col = NULL, decimals = 1)
 \item{grouping_col}{the unquoted name of the column to use for groupings}
 }
 \value{
-the summary as a `gt_tbl`
+the summary as a `kable table`
 }
 \description{
-Format a numerical column summary with `gt()`
+Format a numerical column summary with `kable()`
 }
