@@ -27,6 +27,6 @@ dflt_kable <- function(df, grouping_col = NULL) {
 
   kableExtra::kable_styling(
     tab,
-    bootstrap_option = c("striped", "bordered")
+    bootstrap_option = c("striped")
   )
 }

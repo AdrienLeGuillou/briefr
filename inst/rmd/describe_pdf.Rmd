@@ -1,0 +1,47 @@
+---
+title: "Data Frame briefing"
+output: 
+  pdf_document:
+    # latex_engine: xelatex
+    toc: true
+    number_sections: true
+# default_font: "Lato"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+symnames <- rlang::syms(colnames(df))
+```
+  
+# Dataframe overview
+  
+```{r results='asis', warning=FALSE, message=FALSE, echo=FALSE}
+  brf_rmd_df(df)
+```
+
+# Non Grouped description
+
+```{r results='asis', warning=FALSE, message=FALSE, echo=FALSE}
+invisible(lapply(
+  rlang::syms(colnames(df)),
+  brf_rmd_dispatch, df = df, na.rm = na.rm
+))
+```
+
+```{r results='asis', warning=FALSE, message=FALSE, echo=FALSE}
+invisible(lapply(
+  groupings, 
+  function(g) {
+    cat(paste0("# Grouping by ", rlang::as_label(g), "\n\n"))
+    
+    invisible(lapply(
+      symnames[symnames != rlang::as_label(g)],
+      brf_rmd_dispatch, df = df, grouping_col = !!g, na.rm = na.rm
+    ))
+    
+    cat("\n\n")
+  }
+))
+```
+
