@@ -4,15 +4,15 @@ Title: Get a briefing of your data frame
 Version: 0.1.0
 Author: Adrien LE GUILLOU
 Maintainer: Adrien LE GUILLOU <adrien.leguillou@gmail.com>
-Description: More about what it does (maybe more than one line)
+Description: Produce Briefing of a data frame
     Use four spaces when indenting paragraphs within the Description.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    dplyr (>= 0.8.0.1),
-    rlang,
-    tidyr,
+    dplyr (>= 0.8),
+    rlang (>= 0.4),
+    tidyr (>= 1.0),
     kableExtra,
     knitr,
     rmarkdown,
