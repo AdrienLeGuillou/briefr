@@ -81,9 +81,8 @@ brf_rmd_dispatch <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   tryCatch(
     appropriate_rmd(df, !!data_col, !!grouping_col, na.rm = na.rm),
     error = function(e) {
-      cat("No description available \n\n")
-      cat("The following error occured \n\n")
-      cat(e)
+      cat(paste0("## **`", data_col_str, "`** \n\n"))
+      cat("An error occured \n\n")
       cat("\n\n")
     })
 }
