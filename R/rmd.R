@@ -53,11 +53,17 @@ brf_rmd_dispatch <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   data_col <- rlang::enquo(data_col)
   grouping_col <- rlang::enquo(grouping_col)
 
+  data_col_str <- rlang::as_label(data_col)
+
+  if (!rlang::quo_is_null(grouping_col)) {
+   grouping_col_str <- rlang::as_label(grouping_col)
+  }
+
   cat(paste0(
-    "## **`", rlang::as_label(data_col), "`**",
+    "## **`", data_col_str, "`**",
     ifelse(
       !rlang::quo_is_null(grouping_col),
-      paste0(" - by *`", rlang::as_label(grouping_col), "`* "),
+      paste0(" - by *`", grouping_col_str, "`* "),
       ""
     ),"\n\n")
   )
@@ -72,5 +78,12 @@ brf_rmd_dispatch <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   else
     appropriate_rmd <- function(...) cat("No description available \n\n")
 
-  appropriate_rmd(df, !!data_col, !!grouping_col, na.rm = na.rm)
+  tryCatch(
+    appropriate_rmd(df, !!data_col, !!grouping_col, na.rm = na.rm),
+    error = function(e) {
+      cat("No description available \n\n")
+      cat("The following error occured \n\n")
+      cat(e)
+      cat("\n\n")
+    })
 }

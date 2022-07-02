@@ -115,7 +115,8 @@ brf_plot_cat_count <- function(df, data_col, grouping_col = NULL, na.rm = FALSE)
 
   default_layer <- list(
     ggplot2::theme_minimal(),
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
+    ggplot2::theme( axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)),
+    ggplot2::labs(fill = "Legend")
   )
 
   aesthetic <- ggplot2::aes(fill = !!data_col)
