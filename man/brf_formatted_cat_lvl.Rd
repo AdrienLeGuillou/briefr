@@ -4,8 +4,13 @@
 \alias{brf_formatted_cat_lvl}
 \title{Format a categorical column levels summary with `gt()`}
 \usage{
-brf_formatted_cat_lvl(df, data_col, grouping_col = NULL, na.rm = F,
-  decimals = 1)
+brf_formatted_cat_lvl(
+  df,
+  data_col,
+  grouping_col = NULL,
+  na.rm = F,
+  decimals = 1
+)
 }
 \arguments{
 \item{df}{a data frame}

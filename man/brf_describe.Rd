@@ -4,14 +4,19 @@
 \alias{brf_describe}
 \title{Get a briefing of a data frame}
 \usage{
-brf_describe(df, groupings = NULL, na.rm = F,
-  output_filename = "briefing.html", output_dir = NULL)
+brf_describe(
+  df,
+  groupings = NULL,
+  na.rm = F,
+  output_filename = "briefing.html",
+  output_dir = NULL
+)
 }
 \arguments{
 \item{df}{the data frame to summarise}
 
-\item{groupings}{The columns to use as grouping variables. This takes a tidyselect specification.
-Multiple columns means multiple groupings, not cross-groupings}
+\item{groupings}{The columns to use as grouping variables as a character
+vector.}
 
 \item{output_filename}{The name of the .html report (default: "briefing.html")}
 
