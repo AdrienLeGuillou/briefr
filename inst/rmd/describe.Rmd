@@ -33,11 +33,11 @@ invisible(lapply(
 invisible(lapply(
   groupings,
   function(g) {
-    cat(paste0("# Grouping by ", rlang::as_label(g), "\n\n"))
+    cat(paste0("# Grouping by ", g, "\n\n"))
 
     invisible(lapply(
-      symnames[symnames != rlang::as_label(g)],
-      brf_rmd_dispatch, df = df, grouping_col = !!g, na.rm = na.rm
+      symnames[symnames != g],
+      brf_rmd_dispatch, df = df, grouping_col = !!rlang::sym(g), na.rm = na.rm
     ))
 
     cat("\n\n")
