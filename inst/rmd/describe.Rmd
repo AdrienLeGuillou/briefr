@@ -23,10 +23,14 @@ symnames <- rlang::syms(colnames(df))
 # Non Grouped description
 
 ```{r results='asis', warning=FALSE, message=FALSE, echo=FALSE}
-invisible(lapply(
-  rlang::syms(colnames(df)),
-  brf_rmd_dispatch, df = df, na.rm = na.rm
-))
+if (non_grouped) {
+  invisible(lapply(
+    rlang::syms(colnames(df)),
+    brf_rmd_dispatch, df = df, na.rm = na.rm
+  ))
+} else {
+    cat("Non Grouped description skipped\n\n")
+}
 ```
 
 ```{r results='asis', warning=FALSE, message=FALSE, echo=FALSE}

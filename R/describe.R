@@ -11,7 +11,7 @@
 #' @export
 brf_describe <- function(df, groupings = NULL, na.rm = F,
                          output_filename = "briefing.html",
-                         output_dir = NULL) {
+                         output_dir = NULL, non_grouped = TRUE) {
 
   if (is.null(output_dir)) output_dir <- getwd()
 
@@ -19,6 +19,11 @@ brf_describe <- function(df, groupings = NULL, na.rm = F,
     system.file("rmd/describe.Rmd", package = "briefr"),
     output_file = output_filename,
     output_dir = output_dir,
-    params = list(df = df, groupings = groupings, na.rm = na.rm)
+    params = list(
+      df = df,
+      groupings = groupings,
+      na.rm = na.rm,
+      non_grouped = non_grouped
+    )
   )
 }
