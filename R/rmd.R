@@ -70,7 +70,7 @@ brf_rmd_dispatch <- function(df, data_col, grouping_col = NULL, na.rm = F) {
 
   if (all(is.na( dplyr::pull(df, !!data_col) )))
     appropriate_rmd <- function(...) cat("Only NA's (missing values) \n\n")
-  else if (any(class(dplyr::pull(df, !!data_col)) %in% c("numeric", "Date")))
+  else if (any(class(dplyr::pull(df, !!data_col)) %in% c("numeric", "Date", "integer")))
     appropriate_rmd <- brf_rmd_num
   else if (any(
     class(dplyr::pull(df, !!data_col)) %in% c("character", "factor", "logical")))
