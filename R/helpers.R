@@ -18,8 +18,8 @@ dflt_kable <- function(df, grouping_col = NULL) {
 
   if (!rlang::quo_is_null(grouping_col)) {
     df <- dplyr::arrange(df, !!grouping_col)
-    tab <- kableExtra::kable(df, align = c("l", rep("c", ncol(df) - 1))) %>%
-      kableExtra::column_spec(1, bold = T, border_right = T,
+    tab <- kableExtra::kable(df, align = c("l", rep("c", ncol(df) - 1))) |>
+      kableExtra::column_spec(1, bold = TRUE, border_right = TRUE,
                               background = "white")
   } else {
     tab <- kableExtra::kable(df, align = rep("c", ncol(df)))

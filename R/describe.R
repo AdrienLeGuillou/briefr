@@ -9,7 +9,7 @@
 #'   Otherwise this parameter will be passed to the `output_dir` parameter of rmarkdown::render()
 #'
 #' @export
-brf_describe <- function(df, groupings = NULL, na.rm = F,
+brf_describe <- function(df, groupings = NULL, na.rm = FALSE,
                          output_filename = "briefing.html",
                          output_dir = NULL, non_grouped = TRUE) {
 

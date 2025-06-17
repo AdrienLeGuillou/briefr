@@ -148,9 +148,9 @@ brf_plot_cat_count <- function(df, data_col, grouping_col = NULL, na.rm = FALSE)
     ggplot2::geom_bar(position = "dodge") +
     ggplot2::geom_text(
       ggplot2::aes(
-        y = ..count../2,
+        y = ..count.. / 2,
         label = scales::percent(
-          ..count../tapply(..count.., ..x.., sum, na.rm = T)[..x..],
+          ..count.. / tapply(..count.., ..x.., sum, na.rm = TRUE)[..x..],
           accuracy = 1
         )
       ),

@@ -2,7 +2,7 @@
 #'
 #' @param df the data frame to summarise
 brf_rmd_df <- function(df) {
-  brf_formatted_df(df) %>%
+  brf_formatted_df(df) |>
     cat()
 
   cat("\n\n")
@@ -25,7 +25,7 @@ brf_rmd_num <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   )
   cat("\n\n")
 
-  brf_formatted_num(df, !!data_col, !!grouping_col) %>%
+  brf_formatted_num(df, !!data_col, !!grouping_col) |>
     cat()
 
   cat("\n\n")
@@ -41,7 +41,7 @@ brf_rmd_cat <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   print(brf_plot_cat_count(df, !!data_col, !!grouping_col, na.rm = na.rm))
   cat("\n\n")
 
-  brf_formatted_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm) %>%
+  brf_formatted_cat_lvl(df, !!data_col, !!grouping_col, na.rm = na.rm) |>
     cat()
   cat("\n\n")
 }
@@ -56,7 +56,7 @@ brf_rmd_dispatch <- function(df, data_col, grouping_col = NULL, na.rm = F) {
   data_col_str <- rlang::as_label(data_col)
 
   if (!rlang::quo_is_null(grouping_col)) {
-   grouping_col_str <- rlang::as_label(grouping_col)
+    grouping_col_str <- rlang::as_label(grouping_col)
   }
 
   cat(paste0(
