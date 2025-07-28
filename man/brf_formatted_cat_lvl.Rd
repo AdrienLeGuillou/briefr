@@ -8,7 +8,7 @@ brf_formatted_cat_lvl(
   df,
   data_col,
   grouping_col = NULL,
-  na.rm = F,
+  na.rm = FALSE,
   decimals = 1
 )
 }

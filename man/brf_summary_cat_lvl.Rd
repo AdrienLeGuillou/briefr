@@ -4,7 +4,7 @@
 \alias{brf_summary_cat_lvl}
 \title{Summarise the levels of a categorical column in a data frame with a grouping option}
 \usage{
-brf_summary_cat_lvl(df, data_col, grouping_col = NULL, na.rm = F)
+brf_summary_cat_lvl(df, data_col, grouping_col = NULL, na.rm = FALSE)
 }
 \arguments{
 \item{df}{a data frame}

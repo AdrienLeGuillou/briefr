@@ -7,9 +7,10 @@
 brf_describe(
   df,
   groupings = NULL,
-  na.rm = F,
+  na.rm = FALSE,
   output_filename = "briefing.html",
-  output_dir = NULL
+  output_dir = NULL,
+  non_grouped = TRUE
 )
 }
 \arguments{
